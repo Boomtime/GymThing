@@ -17,7 +17,7 @@ Member limit
  {
   date: Date(),
   event: [
-   { time: Time(), selfStatus: MemberStatus(), memberCurrent: Number(), memberLimit: Number() },
+   { time: Time(), selfStatus: MemberStatus(), memberCount: Number(), memberLimit: Number() },
    ...
   ]
  },
