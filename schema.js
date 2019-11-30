@@ -23,10 +23,10 @@ Member() = {
 }
 
 AttendStatus() = [
-	"confirmed", // signed up
-	"waiting",   // on the wait list
-	"present",   // after/during class, got marked as present - this is not recorded in recurring events
-	"cancelled"  // was signed up ('confirmed') but withdrew before the cutoff - this is not recorded in recurring events
+	"confirmed",// signed up
+	"waiting", 	// on the wait list
+	"present",  // after/during class, got marked as present - this is not recorded in recurring events
+	"cancel"  	// was previously 'confirmed', this is only for actions, it is not otherwise recorded
 ]
 
 TrainerId() = String() // 10 characters, shortId prefix 't'
@@ -59,13 +59,14 @@ Event() = {
 GlobalVariableName() = [
 	"defaultClassLimit",	// integer > 0
 	"bookAheadDays",		// integer > 0
-	"lateCancelMinutes",	// integer >= 0; minutes before class that cancellations are no longer accepted
+	"lateChangeMinutes",	// integer >= 0; minutes before class that status changes are no longer accepted
 	"maxWaitList",			// integer >= 0; maximum waitlist length
 ]
 
 Global() = {
 	_id: GlobalVariableName(),
-	value: Integer(),
+	value: Integer(),		// all currently defined globals are integers
+	description: String(), 	// display description of the purpose for this variable
 	changed: Audit()
 }
 

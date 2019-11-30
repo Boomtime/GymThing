@@ -6,7 +6,7 @@
 </head>
 <body>
 <style>
-pre {outline: 1px solid #ccc; padding: 5px; margin: 5px; }
+pre { outline: 1px solid #ccc; padding: 5px; margin: 5px; }
 .string { color: green; }
 .number { color: darkorange; }
 .boolean { color: blue; }
@@ -35,20 +35,21 @@ pre {outline: 1px solid #ccc; padding: 5px; margin: 5px; }
 				cls = 'null';
 			}
 			return '<span class="' + cls + '">' + match + '</span>';
-		});
+		} );
 	}
 
 	function restRequest( verb, method ) {
-		var creds = { key: document.getElementById( "key" ).value, pwd: document.getElementById( "pwd" ).value };
+		const ckey = document.getElementById( "key" ).value;
+		const cpwd = document.getElementById( "pwd" ).value;
 		var req = new XMLHttpRequest();
 		req.open( verb, baseUri + method, false );
-		req.setRequestHeader( "Authorization", "Basic " + btoa( creds.key + ":" + creds.pwd ) );
+		req.setRequestHeader( "Authorization", "Basic " + btoa( ckey + ":" + cpwd ) );
 		return req;
 	}
 
-	function restResponse( req ) {
+	function restResponse( req, body ) {
 		try {
-			req.send();
+			req.send( body );
 		}
 		catch( e ) {
 			alert( e );
@@ -70,14 +71,16 @@ pre {outline: 1px solid #ccc; padding: 5px; margin: 5px; }
 
 	function apiEvent( status ) {
 		var evtid = document.getElementById( "eventId" ).value;
-		var req = restRequest( "PUT", "event/" + evtid );
+		var req = restRequest( "POST", "event/" + evtid );
+		req.setRequestHeader( "Content-Type", "application/json" );
+		restResponse( req, JSON.stringify( { status: status, allRepeatEvents: true } ) );
 	}
 </script>
 <form>
 	<p><button type="button" onclick="apiTest(); return true;">test</button></p>
 	<p>key: <input type="text" id="key" value="knw0cbyo32" /> pwd: <input type="text" id="pwd" value="00000000-0000-4000-0000-000000000000" /> </p>
 	<p><button type="button" onclick="apiEventList(); return true;">eventList</button></p>
-	<p>eventId: <input type="text" id="eventId"/> <input type="button" onclick="apiEvent('confirm')">Confirm</input> <input type="button" onclick="apiEvent('waiting')">Waiting</input> <input type="button" onclick="apiEvent('cancel')">Cancel</input> </p>
+	<p>eventId: <input type="text" id="eventId"/> <button type="button" onclick="apiEvent('confirm')">Confirm</button> <button type="button" onclick="apiEvent('waiting')">Waiting</button> <button type="button" onclick="apiEvent('cancel')">Cancel</button> </p>
 </form>
 <pre id="response">
 </pre>

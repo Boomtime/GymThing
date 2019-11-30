@@ -5,6 +5,19 @@
 `MemberStatus()` = enum 'confirm', 'waiting', or null  
 `Number()` = standard JSON number but is not expected to ever have a decimal point  
 
+## HTTP codes
+### 400
+GET/POST parameter error, method specific
+
+### 401
+credentials are malformed or can't authenticate
+
+### 404
+method doesn't exist, may also indicate an event that doesn't exist since events are paths
+
+### 503
+Usually some kind of database error
+
 ## API
 ### eventList GET
 List of all classes that are bookable  
@@ -25,7 +38,7 @@ Member limit
 ]
 ```
 
-### eventStatus PUT
+### event/:eventId/:status PUT
 Change attendance of a class event for this member, only succeeds if outside the freeze window
 
 ### apiKey GET
