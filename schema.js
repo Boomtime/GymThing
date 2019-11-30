@@ -1,15 +1,21 @@
+import { stringify } from "querystring"
+
 Audit() = {
 	by: Trainer()._id,
 	at: ISODate()
 }
 
+MemberId() = String() // 10 characters, shortId prefix 'm'
+
+KeyId() = String() // 10 characters, shortId prefix 'k'
+
 Member() = {
-	_id: UUID(),
+	_id: MemberId(),
 	name: "Firstname Surname",
 	email: "first.surname@some.domain.com",
 	phone: "+61401234567",
-	keys: [
-		{ evidence: Binary(), salt: Binary() }
+	api: [
+		{ key: KeyId(), pwd: UUIDv4() }
 	],
 	otk: { code: Integer(), ts: ISODate() }, // field present only during new device discovery
 	changed: Audit(),
@@ -23,26 +29,30 @@ AttendStatus() = [
 	"cancelled"  // was signed up ('confirmed') but withdrew before the cutoff - this is not recorded in recurring events
 ]
 
+TrainerId() = String() // 10 characters, shortId prefix 't'
+
 Trainer() = {
-	_id: UUID(),
+	_id: TrainerId(),
 	name: "Master Trainer",
 	isAdmin: Boolean(),
 	pwd: { evidence: "", salt: "" }
 }
 
-ClassAttendanceElement() = {
+EventAttendanceElement() = {
 	memberId: Member()._id,
 	name: Member().name,
 	status: AttendStatus(),
 	changed: Audit()
 }
 
-Class() = {
-	_id: UUID(),
+EventId() = String() // 10 characters, shortId prefix 'e'
+
+Event() = {
+	_id: EventId(),
 	startTime: ISODate(),
 	limit: Integer(),
-	attendees: [ ClassAttendanceElement() ],
-	sourceId: Class()._id, // only null for source events
+	attendees: [ EventAttendanceElement() ],
+	sourceId: Event()._id, // only null for source events
 	created: Audit()
 }
 

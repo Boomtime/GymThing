@@ -1,12 +1,12 @@
 ## Types
+`EventId()` = 10 character event identity as string
 `Date()` = ISO-8601 date string, YYYY-MM-DD  
 `Time()` = ISO-8601 time string, HH:MM  
-`MemberStatus()` = enum 'intent', 'waiting', or null  
+`MemberStatus()` = enum 'confirm', 'waiting', or null  
 `Number()` = standard JSON number but is not expected to ever have a decimal point  
 
 ## API
-### listSchedule
-#### GET
+### eventList GET
 List of all classes that are bookable  
 Self attendance status; “intent”, “waiting”, or “none”  
 Class time  
@@ -17,7 +17,7 @@ Member limit
  {
   date: Date(),
   event: [
-   { time: Time(), selfStatus: MemberStatus(), memberCount: Number(), memberLimit: Number() },
+   { eventId: EventId(), time: Time(), selfStatus: MemberStatus(), memberCount: Number(), memberLimit: Number() },
    ...
   ]
  },
@@ -25,18 +25,14 @@ Member limit
 ]
 ```
 
-### attend
-#### PUT
-Change an attendance of a class for this member  
+### eventStatus PUT
+Change attendance of a class event for this member, only succeeds if outside the freeze window
 
-### apiKey
-#### GET
+### apiKey GET
 Translate a one-time code (SMS or email, or whatever) to a secret key that can be used forever
 
-### messageList
-#### GET
-Get a list of all unread messages; eg. upgrade from waiting
+### messageList GET
+Get a list of all change messages; eg. upgrade from waiting
 
-### messageClear
-#### PUT
-Clears all unread events
+### messageList PUT
+Clears all messages
